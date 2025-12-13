@@ -18,16 +18,20 @@ This document describes the steps to set up the Java environment required to bui
 
 1. Download Java 21 from:
     - https://www.oracle.com/java/technologies/javase-downloads.html
-    - https://adoptium.net/
-
+   ![img.png](img.png)
 2. Install the JDK and note the installation path.
+3. Set JAVA_HOME Windows
+    A. Open Environment Variables
+    B. Add a new System Variable:
+    C. JAVA_HOME = C:\Program Files\Java\jdk-21
+    D. Add to Path: %JAVA_HOME%\bin
 
----
+4. Restart terminal after setting variables.
+5. Open Terminal / Git Bash and run: """java -version""" & ""javac -version"""
+    - ![img_3.png](img_3.png)
+7. Verify or Bash RUN """mvn -version""" Ensure Maven shows Java 21 as the runtime.
+8. Java 21 installed successfully.
 
-## Step 2: Verify Java Installation
 
-Open Terminal / Git Bash and run:
+   
 
-```bash
-java -version
-javac -version
