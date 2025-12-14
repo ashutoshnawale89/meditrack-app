@@ -7,6 +7,7 @@ import com.airtribe.meditrack.utils.Validator;
 
 import java.time.DayOfWeek;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DoctorService implements Searchable<Doctor> {
@@ -61,5 +62,42 @@ public class DoctorService implements Searchable<Doctor> {
                 .filter(d -> d.getAvailableDays() != null)
                 .filter(d -> d.getAvailableDays().contains(day))
                 .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Find doctors using custom predicate
+    public List<Doctor> findDoctorsByPredicate(Predicate<Doctor> predicate) {
+        return doctors.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Get average experience
+    public OptionalDouble getAverageExperience() {
+        return doctors.stream()
+                .mapToInt(Doctor::getExperience)
+                .average();
+    }
+
+    // Advanced Java 8: Group doctors by specialization
+    public Map<Specialization, List<Doctor>> groupDoctorsBySpecialization() {
+        return doctors.stream()
+                .collect(Collectors.groupingBy(Doctor::getSpecialization));
+    }
+
+    // Advanced Java 8: Find most experienced doctors
+    public List<Doctor> findTopExperiencedDoctors(int limit) {
+        return doctors.stream()
+                .sorted(Comparator.comparingInt(Doctor::getExperience).reversed())
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Count doctors by specialization
+    public Map<Specialization, Long> countDoctorsBySpecialization() {
+        return doctors.stream()
+                .collect(Collectors.groupingBy(
+                        Doctor::getSpecialization,
+                        Collectors.counting()
+                ));
     }
 }

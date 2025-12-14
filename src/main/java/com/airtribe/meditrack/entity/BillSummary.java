@@ -5,6 +5,7 @@ import com.airtribe.meditrack.constants.BillStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BillSummary {
 
@@ -15,16 +16,44 @@ public class BillSummary {
     private LocalDateTime generatedAt;
 
     public BillSummary() {
+        this.generatedAt = LocalDateTime.now();
     }
 
     public void addBill(Bill bill) {
         bills.add(bill);
-        totalAmount += bill.getAmount();
-        if (bill.getStatus() == BillStatus.PAID) {
-            paidAmount += bill.getAmount();
-        } else if (bill.getStatus() == BillStatus.PENDING) {
-            pendingAmount += bill.getAmount();
-        }
+        recalculateAmounts();
+    }
+
+    // Advanced Java 8: Recalculate amounts using Stream API
+    private void recalculateAmounts() {
+        totalAmount = bills.stream()
+                .mapToDouble(Bill::getAmount)
+                .sum();
+        
+        paidAmount = bills.stream()
+                .filter(bill -> bill.getStatus() == BillStatus.PAID)
+                .mapToDouble(Bill::getAmount)
+                .sum();
+        
+        pendingAmount = bills.stream()
+                .filter(bill -> bill.getStatus() == BillStatus.PENDING)
+                .mapToDouble(Bill::getAmount)
+                .sum();
+    }
+
+    // Advanced Java 8: Get bills by status using Stream
+    public List<Bill> getBillsByStatus(BillStatus status) {
+        return bills.stream()
+                .filter(bill -> bill.getStatus() == status)
+                .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Get average bill amount
+    public double getAverageBillAmount() {
+        return bills.stream()
+                .mapToDouble(Bill::getAmount)
+                .average()
+                .orElse(0.0);
     }
 
     public List<Bill> getBills() { return bills; }

@@ -1,8 +1,6 @@
 package com.airtribe.meditrack.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Patient {
 
@@ -44,5 +42,15 @@ public class Patient {
     public Doctor getAssignedDoctors() { return assignedDoctors; }
     public void setAssignedDoctors(Doctor assignedDoctors) {
         this.assignedDoctors = assignedDoctors;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient ID: " + id +
+               ", Name: " + person.getName() +
+               ", Medical Record Number: " + medicalRecordNumber +
+               ", Registration Date: " + registrationDate +
+               ", Active: " + isActive +
+               ", Assigned Doctors: " + (assignedDoctors != null ? assignedDoctors.getName() : "None");
     }
 }

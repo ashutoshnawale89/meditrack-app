@@ -4,9 +4,9 @@ import com.airtribe.meditrack.entity.Doctor;
 import com.airtribe.meditrack.entity.Patient;
 import com.airtribe.meditrack.interfaces.Searchable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class PatientService implements Searchable<Patient> {
 
@@ -52,11 +52,42 @@ public class PatientService implements Searchable<Patient> {
 
     @Override
     public List<Patient> findByName(String name) {
-        List<Patient> result = new ArrayList<>();
-        patients.stream()
+        return patients.stream()
                 .filter(p -> p.getPerson().getName().equalsIgnoreCase(name))
-                .forEach(result::add);
-        return result;
+                .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Find patients by predicate
+    public List<Patient> findPatientsByPredicate(Predicate<Patient> predicate) {
+        return patients.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Find active patients
+    public List<Patient> findActivePatients() {
+        return patients.stream()
+                .filter(Patient::isActive)
+                .collect(Collectors.toList());
+    }
+
+    // Advanced Java 8: Get patient statistics
+    public Map<String, Long> getPatientStatistics() {
+        long totalPatients = patients.size();
+        long activePatients = patients.stream().filter(Patient::isActive).count();
+        long inactivePatients = totalPatients - activePatients;
+        
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("total", totalPatients);
+        stats.put("active", activePatients);
+        stats.put("inactive", inactivePatients);
+        return stats;
+    }
+
+    // Advanced Java 8: Find patients by age range
+    public List<Patient> findPatientsByAgeRange(int minAge, int maxAge) {
+        return patients.stream()
+                .filter(p -> p.getPerson().getAge() >= minAge && p.getPerson().getAge() <= maxAge)
+                .collect(Collectors.toList());
     }
 }
-

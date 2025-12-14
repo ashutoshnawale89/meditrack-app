@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 public class Appointment {
 
     private long id;
-    private Doctor doctor;
     private Patient patient;
     private LocalDateTime appointmentDateTime;
     private AppointmentStatus status;
@@ -17,9 +16,8 @@ public class Appointment {
         this.status = AppointmentStatus.SCHEDULED;
     }
 
-    public Appointment(long id, Doctor doctor, Patient patient, LocalDateTime appointmentDateTime) {
+    public Appointment(long id, Patient patient, LocalDateTime appointmentDateTime) {
         this.id = id;
-        this.doctor = doctor;
         this.patient = patient;
         this.appointmentDateTime = appointmentDateTime;
         this.status = AppointmentStatus.SCHEDULED;
@@ -27,9 +25,6 @@ public class Appointment {
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
-
-    public Doctor getDoctor() { return doctor; }
-    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
 
     public Patient getPatient() { return patient; }
     public void setPatient(Patient patient) { this.patient = patient; }
